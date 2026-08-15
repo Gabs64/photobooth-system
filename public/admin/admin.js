@@ -42,8 +42,12 @@ class PhotoboothAdmin {
           });
           const data = await res.json();
           if (data.success) {
+            if (data.token) {
+              localStorage.setItem('admin_token', data.token);
+            }
             if (errBadge) errBadge.style.display = 'none';
-            document.getElementById('admin-login-overlay').classList.remove('active');
+            const overlay = document.getElementById('admin-login-overlay');
+            if (overlay) overlay.classList.remove('active');
             await this.loadAllData();
             if (window.showModal) {
               window.showModal({ title: 'Welcome Admin!', message: 'Signed in successfully to Admin Portal.', type: 'success' });
@@ -67,8 +71,10 @@ class PhotoboothAdmin {
     const logoutBtn = document.getElementById('btn-admin-logout');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async () => {
+        localStorage.removeItem('admin_token');
         await fetch('/api/auth/logout', { method: 'POST' });
-        document.getElementById('admin-login-overlay').classList.add('active');
+        const overlay = document.getElementById('admin-login-overlay');
+        if (overlay) overlay.classList.add('active');
         if (window.showModal) {
           window.showModal({ title: 'Logged Out', message: 'You have been logged out of the Admin Portal.', type: 'info' });
         }
@@ -78,7 +84,9 @@ class PhotoboothAdmin {
 
   async checkAuthStatus() {
     try {
-      const res = await fetch('/api/auth/check');
+      const token = localStorage.getItem('admin_token');
+      const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+      const res = await fetch('/api/auth/check', { headers });
       const data = await res.json();
       const overlay = document.getElementById('admin-login-overlay');
       if (data.authenticated) {
