@@ -4,10 +4,21 @@ const { google } = require('googleapis');
 const db = require('../../db/database');
 
 function getOAuth2Client(req) {
-  const rawClientId = process.env.GOOGLE_CLIENT_ID || '';
-  const rawClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
-  const clientId = rawClientId.replace(/^["']|["']$/g, '').trim();
-  const clientSecret = rawClientSecret.replace(/^["']|["']$/g, '').trim();
+  let clientId = '';
+  let clientSecret = '';
+  try {
+    const config = db.prepare('SELECT client_id, client_secret FROM cloud_config WHERE id = 1').get();
+    if (config) {
+      clientId = config.client_id || '';
+      clientSecret = config.client_secret || '';
+    }
+  } catch (e) {}
+
+  if (!clientId) clientId = process.env.GOOGLE_CLIENT_ID || '';
+  if (!clientSecret) clientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
+
+  clientId = clientId.replace(/^["']|["']$/g, '').trim();
+  clientSecret = clientSecret.replace(/^["']|["']$/g, '').trim();
   
   let redirectUri = process.env.GOOGLE_REDIRECT_URI;
   if (!redirectUri && req) {
@@ -147,7 +158,7 @@ router.get('/gdrive/callback', async (req, res) => {
 // UPDATE Cloud Config
 router.put('/config', (req, res) => {
   try {
-    const { provider, account_name, destination_folder, sharing_permission, link_expiration_days, is_connected } = req.body;
+    const { provider, account_name, destination_folder, sharing_permission, link_expiration_days, is_connected, client_id, client_secret } = req.body;
 
     db.prepare(`
       UPDATE cloud_config
@@ -157,6 +168,8 @@ router.put('/config', (req, res) => {
           sharing_permission = COALESCE(?, sharing_permission),
           link_expiration_days = COALESCE(?, link_expiration_days),
           is_connected = COALESCE(?, is_connected),
+          client_id = COALESCE(?, client_id),
+          client_secret = COALESCE(?, client_secret),
           last_synced_at = CURRENT_TIMESTAMP
       WHERE id = 1
     `).run(
@@ -165,7 +178,9 @@ router.put('/config', (req, res) => {
       destination_folder,
       sharing_permission,
       link_expiration_days,
-      is_connected !== undefined ? (is_connected ? 1 : 0) : null
+      is_connected !== undefined ? (is_connected ? 1 : 0) : null,
+      client_id,
+      client_secret
     );
 
     const updated = db.prepare('SELECT * FROM cloud_config WHERE id = 1').get();

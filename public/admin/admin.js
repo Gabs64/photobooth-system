@@ -374,6 +374,8 @@ class PhotoboothAdmin {
 
       if (data.config) {
         document.getElementById('cloud-provider').value = data.config.provider || 'google_drive';
+        if (document.getElementById('cloud-client-id')) document.getElementById('cloud-client-id').value = data.config.client_id || '';
+        if (document.getElementById('cloud-client-secret')) document.getElementById('cloud-client-secret').value = data.config.client_secret || '';
         document.getElementById('cloud-account').value = data.config.account_name || '';
         document.getElementById('cloud-folder').value = data.config.destination_folder || '';
         document.getElementById('cloud-sharing').value = data.config.sharing_permission || 'anyone_with_link';
@@ -381,10 +383,10 @@ class PhotoboothAdmin {
         const label = document.getElementById('gdrive-account-label');
         if (data.config.is_connected && data.config.refresh_token) {
           label.innerHTML = `<span class="badge badge-success">CONNECTED</span> Authorized as <strong>${data.config.account_name}</strong>`;
-        } else if (data.hasClientCredentials) {
-          label.innerHTML = `<span class="badge badge-warning">READY TO CONNECT</span> API Credentials found in .env. Click button to authorize.`;
+        } else if (data.config.client_id || data.hasClientCredentials) {
+          label.innerHTML = `<span class="badge badge-warning">READY TO CONNECT</span> API Credentials saved. Click button to authorize.`;
         } else {
-          label.innerHTML = `<span class="badge badge-danger">NOT CONNECTED</span> Please add GOOGLE_CLIENT_ID & SECRET to .env`;
+          label.innerHTML = `<span class="badge badge-danger">NOT CONNECTED</span> Enter your Google OAuth Client ID & Secret below.`;
         }
       }
 
@@ -592,6 +594,8 @@ class PhotoboothAdmin {
       try {
         const payload = {
           provider: document.getElementById('cloud-provider').value,
+          client_id: document.getElementById('cloud-client-id') ? document.getElementById('cloud-client-id').value.trim() : null,
+          client_secret: document.getElementById('cloud-client-secret') ? document.getElementById('cloud-client-secret').value.trim() : null,
           account_name: document.getElementById('cloud-account').value,
           destination_folder: document.getElementById('cloud-folder').value,
           sharing_permission: document.getElementById('cloud-sharing').value

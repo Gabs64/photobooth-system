@@ -160,6 +160,8 @@ function initSchema() {
       is_connected INTEGER DEFAULT 1,
       access_token TEXT DEFAULT NULL,
       refresh_token TEXT DEFAULT NULL,
+      client_id TEXT DEFAULT NULL,
+      client_secret TEXT DEFAULT NULL,
       last_synced_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
@@ -170,6 +172,12 @@ function initSchema() {
   } catch (e) {}
   try {
     db.exec(`ALTER TABLE cloud_config ADD COLUMN refresh_token TEXT DEFAULT NULL`);
+  } catch (e) {}
+  try {
+    db.exec(`ALTER TABLE cloud_config ADD COLUMN client_id TEXT DEFAULT NULL`);
+  } catch (e) {}
+  try {
+    db.exec(`ALTER TABLE cloud_config ADD COLUMN client_secret TEXT DEFAULT NULL`);
   } catch (e) {}
 
   // System Settings Table
