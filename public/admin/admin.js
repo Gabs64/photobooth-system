@@ -69,7 +69,11 @@ class PhotoboothAdmin {
           await fetch('/api/auth/logout', { method: 'POST' });
         } catch (e) {}
         const overlay = document.getElementById('admin-login-overlay');
-        if (overlay) overlay.classList.add('active');
+        if (overlay) {
+          overlay.style.display = '';
+          overlay.classList.add('active');
+        }
+        window.location.href = '/admin';
       });
     }
   }
