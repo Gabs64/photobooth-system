@@ -1,0 +1,34 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="50%" stop-color="#3B82F6" />
+      <stop offset="100%" stop-color="#D946EF" />
+    </linearGradient>
+    <filter id="neonGlow">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Double Neon Border -->
+  <rect x="40" y="40" width="1120" height="1520" rx="40" fill="none" stroke="#06B6D4" stroke-width="16" filter="url(#neonGlow)"/>
+  <rect x="70" y="70" width="1060" height="1460" rx="30" fill="none" stroke="#E0E7FF" stroke-width="6" opacity="0.9"/>
+
+  <!-- Neon Header Text -->
+  <text x="600" y="140" font-family="'Impact', Arial, sans-serif" font-size="70" font-weight="bold" fill="#F43F5E" text-anchor="middle" filter="url(#neonGlow)" letter-spacing="6">PARTY TIME!</text>
+
+  <!-- Neon Corner Ornaments -->
+  <circle cx="100" cy="100" r="30" fill="none" stroke="#D946EF" stroke-width="8" filter="url(#neonGlow)"/>
+  <circle cx="1100" cy="100" r="30" fill="none" stroke="#06B6D4" stroke-width="8" filter="url(#neonGlow)"/>
+  <circle cx="100" cy="1500" r="30" fill="none" stroke="#06B6D4" stroke-width="8" filter="url(#neonGlow)"/>
+  <circle cx="1100" cy="1500" r="30" fill="none" stroke="#D946EF" stroke-width="8" filter="url(#neonGlow)"/>
+
+  <!-- Footer Tag -->
+  <rect x="300" y="1440" width="600" height="90" rx="20" fill="#000000" opacity="0.85" stroke="#3B82F6" stroke-width="4"/>
+  <text x="600" y="1500" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="bold" fill="#06B6D4" text-anchor="middle" letter-spacing="3">#Mias10thBirthday</text>
+</svg>

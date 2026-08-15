@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Birthday Party Photobooth Kiosk</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/kiosk/kiosk.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <div id="kiosk-app" class="kiosk-container">
+
+    <!-- Flash Effect Layer -->
+    <div id="flash-layer" class="flash-layer"></div>
+
+    <!-- Top Event Header Bar -->
+    <header class="kiosk-header">
+      <div class="event-brand">
+        <div class="event-icon"><i data-lucide="party-popper"></i></div>
+        <div>
+          <h2 id="header-event-name">Mia's 10th Birthday Bash!</h2>
+          <p id="header-event-date">August 15, 2026</p>
+        </div>
+      </div>
+      <div class="kiosk-header-actions">
+        <a href="/admin" class="btn-admin-link" title="Open Admin Portal">
+          <i data-lucide="settings"></i> Admin
+        </a>
+      </div>
+    </header>
+
+    <!-- SCREEN 1: WELCOME / IDLE SCREEN -->
+    <section id="screen-welcome" class="kiosk-screen active">
+      <div class="welcome-content glass-panel">
+        <div class="party-badge">BIRTHDAY PHOTOBOOTH</div>
+        <h1 id="welcome-title" class="title-gradient">Mia's 10th Birthday Bash!</h1>
+        <p id="welcome-slogan" class="welcome-slogan">Tap anywhere to capture memories!</p>
+        
+        <div class="welcome-action">
+          <button id="btn-start-session" class="btn-primary btn-pulse-large">
+            <i data-lucide="camera"></i> TOUCH TO SNAP PHOTOS
+          </button>
+        </div>
+
+        <div class="welcome-features">
+          <div class="feature-item"><i data-lucide="sparkles"></i> Custom Party Frames</div>
+          <div class="feature-item"><i data-lucide="printer"></i> Instant High-Res Print</div>
+          <div class="feature-item"><i data-lucide="qr-code"></i> Instant Mobile QR Share</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: MODE SELECTION SCREEN -->
+    <section id="screen-mode" class="kiosk-screen">
+      <div class="screen-title-bar">
+        <h2>Choose Your Photo Strip Mode</h2>
+        <p>Select how many photos you'd like on your party print!</p>
+      </div>
+
+      <div class="mode-grid">
+        <div class="mode-card glass-panel" data-mode="1-up">
+          <div class="mode-badge">1 PHOTO</div>
+          <div class="mode-icon"><i data-lucide="image"></i></div>
+          <h3>Single Portrait</h3>
+          <p>One large 4x6" framed masterpiece photo</p>
+        </div>
+
+        <div class="mode-card glass-panel selected" data-mode="3-up">
+          <div class="mode-badge badge-popular">POPULAR</div>
+          <div class="mode-icon"><i data-lucide="film"></i></div>
+          <h3>3-Shot Classic Strip</h3>
+          <p>Traditional 2x6" photobooth fun strip</p>
+        </div>
+
+        <div class="mode-card glass-panel" data-mode="4-up">
+          <div class="mode-badge">4 PHOTOS</div>
+          <div class="mode-icon"><i data-lucide="layout-grid"></i></div>
+          <h3>4-Photo Grid</h3>
+          <p>2x2 grid collage on a 4x6" souvenir card</p>
+        </div>
+      </div>
+
+      <div class="screen-footer-actions">
+        <button id="btn-mode-back" class="btn-secondary"><i data-lucide="arrow-left"></i> Back</button>
+        <button id="btn-mode-next" class="btn-primary">Continue <i data-lucide="arrow-right"></i></button>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: OPTIONAL OVERLAY SELECTOR -->
+    <section id="screen-overlay" class="kiosk-screen">
+      <div class="screen-title-bar">
+        <h2>Select Your Party Frame</h2>
+        <p>Pick a fun overlay design for your photo session!</p>
+      </div>
+
+      <div id="overlay-choices-list" class="overlay-choices-grid">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="screen-footer-actions">
+        <button id="btn-overlay-back" class="btn-secondary"><i data-lucide="arrow-left"></i> Back</button>
+        <button id="btn-overlay-next" class="btn-primary">Start Camera <i data-lucide="camera"></i></button>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: LIVE CAMERA CAPTURE SCREEN -->
+    <section id="screen-capture" class="kiosk-screen">
+      <div class="capture-workspace">
+        <div class="video-viewfinder-container glass-panel">
+          <!-- Video Stream element -->
+          <video id="webcam-feed" autoplay playsinline muted></video>
+          <!-- Simulated Webcam Canvas fallback -->
+          <canvas id="simulated-feed-canvas"></canvas>
+
+          <!-- Overlay Superimposed Live -->
+          <div id="live-overlay-container" class="live-overlay-container">
+            <img id="live-overlay-img" src="" alt="Active Overlay">
+          </div>
+
+          <!-- Countdown Big Text Overlay -->
+          <div id="countdown-overlay" class="countdown-overlay">
+            <span id="countdown-number">3</span>
+          </div>
+
+          <!-- Shot Status Indicator Bar -->
+          <div class="shot-progress-pill">
+            <span id="shot-progress-text">Shot 1 of 3</span>
+            <div class="shot-dots" id="shot-dots-container"></div>
+          </div>
+        </div>
+
+        <div class="capture-sidebar glass-panel">
+          <button id="btn-capture-back" class="btn-secondary btn-capture-back">
+            <i data-lucide="arrow-left"></i> Back to Layouts
+          </button>
+
+          <h3>Posing Tips</h3>
+          <ul class="pose-tips">
+            <li><i data-lucide="smile"></i> Smile big for the camera!</li>
+            <li><i data-lucide="zap"></i> Try fun birthday poses!</li>
+            <li><i data-lucide="sparkles"></i> Check countdown indicator</li>
+          </ul>
+
+          <div class="retake-info-badge">
+            <i data-lucide="rotate-ccw"></i> Retakes Remaining: <strong id="retake-count-text">2</strong>
+          </div>
+
+          <button id="btn-trigger-capture" class="btn-primary btn-pulse-capture">
+            <i data-lucide="camera"></i> SNAP PHOTO NOW!
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: FINAL PREVIEW & PRINT/SHARE OPTIONS -->
+    <section id="screen-preview" class="kiosk-screen">
+      <div class="preview-layout-wrapper">
+        <div class="preview-canvas-card glass-panel">
+          <h3>Your Print Preview</h3>
+          <div class="canvas-aspect-wrapper">
+            <canvas id="final-composite-canvas"></canvas>
+          </div>
+        </div>
+
+        <div class="preview-controls-card glass-panel">
+          <h2>Looks Amazing!</h2>
+          <p>Your photobooth souvenir is ready for digital download:</p>
+
+          <div class="action-options-group">
+            <button id="btn-action-share" class="btn-primary action-btn-large active" style="cursor: default;">
+              <i data-lucide="qr-code"></i> Digital QR Code Only
+            </button>
+          </div>
+
+          <div class="preview-retake-container">
+            <button id="btn-preview-retake" class="btn-secondary btn-danger-soft">
+              <i data-lucide="rotate-ccw"></i> Retake Photos (<span id="retake-left-count">2</span> left)
+            </button>
+          </div>
+
+          <button id="btn-confirm-session" class="btn-primary btn-confirm-finish">
+            CONFIRM & GET PHOTO <i data-lucide="check-circle-2"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6: COMPLETION & QR CODE SCREEN -->
+    <section id="screen-complete" class="kiosk-screen">
+      <div class="complete-modal glass-panel">
+        <div class="complete-header">
+          <div class="success-icon"><i data-lucide="party-popper"></i></div>
+          <h2>Thank You for Celebrating!</h2>
+          <p>Your digital photo is ready for download!</p>
+        </div>
+
+        <div class="complete-body-single">
+          <div class="qr-display-box qr-display-large">
+            <h3 id="qr-box-title">Scan QR Code to Download</h3>
+
+            <!-- Dedicated Liquid Loading Animation -->
+            <div id="qr-loading-container" class="qr-loading-container">
+              <div class="liquid-spinner-wrapper">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring-inner"></div>
+                <div class="spinner-center-icon"><i data-lucide="cloud"></i></div>
+              </div>
+              <p class="loading-status-title">Uploading to Google Drive</p>
+              <p class="loading-status-sub">Generating instant download link & QR code...</p>
+            </div>
+
+            <!-- QR Code Wrapper (hidden until GDrive link is ready) -->
+            <div id="qr-img-wrapper" class="qr-img-wrapper" style="display: none;">
+              <img id="final-qr-img" src="" alt="Photo Download QR Code">
+            </div>
+
+            <a id="final-qr-link-badge" href="#" target="_blank" class="gdrive-url-badge" style="display: none;" title="Open in Google Drive">
+              <i data-lucide="cloud"></i>
+              <span class="qr-url-text" id="final-qr-url">Uploading...</span>
+              <i data-lucide="external-link" class="link-icon"></i>
+            </a>
+
+            <p id="qr-tip-text" class="qr-tip" style="display: none;"><i data-lucide="smartphone"></i> Open camera on your phone to scan!</p>
+          </div>
+        </div>
+
+        <div class="complete-footer">
+          <button id="btn-finish-early" class="btn-primary btn-finish-large">
+            Done! Back to Start <i data-lucide="home"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="/js/modal-system.js"></script>
+  <script src="/kiosk/kiosk.js"></script>
+</body>
+</html>

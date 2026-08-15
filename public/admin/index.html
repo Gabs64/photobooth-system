@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal - Birthday Party Photobooth System</title>
+  <link rel="stylesheet" href="/css/design-system.css">
+  <link rel="stylesheet" href="/admin/admin.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Liquid Glass Admin Login Overlay Modal -->
+  <div id="admin-login-overlay" class="admin-login-overlay">
+    <div class="admin-login-card glass-panel">
+      <div class="login-header">
+        <div class="login-icon"><i data-lucide="lock"></i></div>
+        <h2>Admin Security Login</h2>
+        <p>Enter your administrative credentials to manage the photobooth system.</p>
+      </div>
+
+      <form id="form-admin-login" class="admin-login-form">
+        <div class="form-group">
+          <label>Username</label>
+          <div class="input-icon-wrapper">
+            <input type="text" id="login-username" placeholder="admin" value="admin" required autocomplete="username">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-icon-wrapper">
+            <input type="password" id="login-password" placeholder="••••••••••••" value="photobooth2026!" required autocomplete="current-password">
+          </div>
+        </div>
+
+        <div id="login-error-badge" class="badge badge-danger login-error-badge" style="display:none; margin-bottom: 12px; text-align: center;"></div>
+
+        <button type="submit" id="btn-login-submit" class="btn-primary btn-large btn-login-submit">
+          SIGN IN TO ADMIN PORTAL <i data-lucide="arrow-right"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-wrapper">
+
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar glass-panel">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i data-lucide="sparkles"></i></div>
+        <div>
+          <h2>Photobooth OS</h2>
+          <span class="badge badge-success">Admin v1.0</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="tab-event">
+          <i data-lucide="party-popper"></i> Event & Branding
+        </button>
+        <button class="nav-item" data-tab="tab-overlays">
+          <i data-lucide="layers"></i> Overlay Library
+        </button>
+        <button class="nav-item" data-tab="tab-layouts">
+          <i data-lucide="layout-template"></i> Print Layout Builder
+        </button>
+        <button class="nav-item" data-tab="tab-gallery">
+          <i data-lucide="images"></i> Photo Gallery
+        </button>
+        <button class="nav-item" data-tab="tab-cloud">
+          <i data-lucide="cloud"></i> Cloud Auto-Upload
+        </button>
+        <button class="nav-item" data-tab="tab-settings">
+          <i data-lucide="sliders"></i> Settings & Analytics
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/kiosk" target="_blank" class="btn-primary btn-kiosk-launch mb-8">
+          <i data-lucide="external-link"></i> Launch Touch Kiosk
+        </a>
+        <button id="btn-admin-logout" class="btn-secondary btn-logout" style="width: 100%; justify-content: center;">
+          <i data-lucide="log-out"></i> Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+
+      <!-- TOP HEADER BAR -->
+      <header class="admin-topbar glass-panel">
+        <div>
+          <h1 id="topbar-event-title">Mia's 10th Birthday Bash!</h1>
+          <p class="topbar-subtitle">System Status: <span class="status-dot online"></span> Kiosk Online & Ready</p>
+        </div>
+        <div class="topbar-actions">
+          <button id="btn-quick-refresh" class="btn-secondary"><i data-lucide="refresh-cw"></i> Refresh Data</button>
+        </div>
+      </header>
+
+      <!-- TAB 1: EVENT PROFILE & BRANDING -->
+      <section id="tab-event" class="tab-content active">
+        <div class="tab-header">
+          <h2>Event Setup & Visual Branding</h2>
+          <p>Configure party title, date, primary theme colors, and welcome screen copy.</p>
+        </div>
+
+        <div class="grid-2col">
+          <div class="card glass-panel">
+            <h3>Event Profile Details</h3>
+            <form id="form-event-setup" class="admin-form">
+              <div class="form-group">
+                <label>Event Name</label>
+                <input type="text" id="evt-name" required value="Mia's 10th Birthday Bash!">
+              </div>
+              <div class="form-group">
+                <label>Event Date</label>
+                <input type="date" id="evt-date" required value="2026-08-15">
+              </div>
+              <div class="form-group">
+                <label>Welcome Screen Slogan / Copy</label>
+                <input type="text" id="evt-slogan" value="Tap Screen to Snap & Celebrate!">
+              </div>
+              <div class="form-group">
+                <label>Custom Welcome Background Image URL (Optional)</label>
+                <input type="text" id="evt-bg-url" placeholder="https://example.com/party-bg.jpg">
+              </div>
+              <button type="submit" class="btn-primary"><i data-lucide="save"></i> Save Event Profile</button>
+            </form>
+          </div>
+
+          <div class="card glass-panel">
+            <h3>Theme Color Palette</h3>
+            <div class="color-pickers-grid">
+              <div class="form-group">
+                <label>Primary Brand Accent</label>
+                <input type="color" id="evt-color-primary" value="#8B5CF6">
+              </div>
+              <div class="form-group">
+                <label>Secondary Glow Accent</label>
+                <input type="color" id="evt-color-secondary" value="#F43F5E">
+              </div>
+              <div class="form-group">
+                <label>Kiosk Dark Background</label>
+                <input type="color" id="evt-color-bg" value="#0F172A">
+              </div>
+            </div>
+
+            <div class="theme-preview-box">
+              <h4>Live Theme Preview Badge</h4>
+              <div id="theme-preview-pill" class="theme-preview-pill">
+                <span>🎉 PARTY BOOTH BRANDING</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: OVERLAY LIBRARY & WYSIWYG EDITOR -->
+      <section id="tab-overlays" class="tab-content">
+        <div class="tab-header">
+          <h2>Admin-Managed Overlay Library</h2>
+          <p>Upload PNG transparent frames and use the WYSIWYG editor to adjust positioning, scaling, and time schedules.</p>
+        </div>
+
+        <div class="grid-2col-wide">
+          <!-- WYSIWYG Visual Editor -->
+          <div class="card glass-panel">
+            <div class="card-title-bar">
+              <h3>WYSIWYG Overlay Editor Canvas</h3>
+              <span id="selected-overlay-badge" class="badge badge-warning">No Overlay Selected</span>
+            </div>
+
+            <div class="wysiwyg-canvas-container">
+              <canvas id="wysiwyg-canvas" width="600" height="800"></canvas>
+            </div>
+
+            <div class="editor-controls-grid">
+              <div class="control-item">
+                <label>Position X: <span id="val-pos-x">0</span>px</label>
+                <input type="range" id="slider-pos-x" min="-200" max="200" value="0">
+              </div>
+              <div class="control-item">
+                <label>Position Y: <span id="val-pos-y">0</span>px</label>
+                <input type="range" id="slider-pos-y" min="-200" max="200" value="0">
+              </div>
+              <div class="control-item">
+                <label>Scale: <span id="val-scale">1.0</span>x</label>
+                <input type="range" id="slider-scale" min="0.5" max="2.0" step="0.05" value="1.0">
+              </div>
+              <div class="control-item">
+                <label>Auto-Switch Time (Optional)</label>
+                <input type="time" id="input-overlay-schedule" placeholder="20:00">
+              </div>
+            </div>
+
+            <div class="card-footer-actions">
+              <button id="btn-save-overlay-meta" class="btn-primary"><i data-lucide="check"></i> Save Overlay Layout</button>
+              <button id="btn-set-active-overlay" class="btn-secondary"><i data-lucide="star"></i> Set as Active Kiosk Frame</button>
+            </div>
+          </div>
+
+          <!-- Upload & Overlays List -->
+          <div class="card glass-panel">
+            <h3>Upload New PNG Overlay</h3>
+            <form id="form-upload-overlay" class="admin-form">
+              <div class="form-group">
+                <label>Overlay Name</label>
+                <input type="text" id="upload-ovl-name" placeholder="e.g. Cake Cutting Birthday Frame" required>
+              </div>
+              <div class="form-group">
+                <label>PNG / SVG File (Transparent Alpha Channel)</label>
+                <input type="file" id="upload-ovl-file" accept="image/png,image/svg+xml" required>
+              </div>
+              <button type="submit" class="btn-primary"><i data-lucide="upload"></i> Upload to Library</button>
+            </form>
+
+            <h3 class="mt-24">Existing Overlays</h3>
+            <div id="overlays-list-grid" class="overlays-list-grid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: PRINT LAYOUT CUSTOMIZATION BUILDER -->
+      <section id="tab-layouts" class="tab-content">
+        <div class="tab-header">
+          <h2>Customizable Print Layout Templates</h2>
+          <p>Configure paper sizes, photo grid arrangements, cell margins/borders, and custom date stamps.</p>
+        </div>
+
+        <div class="grid-2col-wide">
+          <!-- Visual Sheet Preview -->
+          <div class="card glass-panel">
+            <h3>Live Print Sheet Preview</h3>
+            <div class="layout-preview-canvas-box">
+              <canvas id="layout-builder-canvas" width="500" height="750"></canvas>
+            </div>
+          </div>
+
+          <!-- Layout Parameters Form -->
+          <div class="card glass-panel">
+            <h3>Layout Sheet Settings</h3>
+            <form id="form-layout-settings" class="admin-form">
+              <div class="form-group">
+                <label>Template Name</label>
+                <input type="text" id="lay-name" value="4-Photo Classic Grid (4x6&quot;)">
+              </div>
+              <div class="form-row-2col">
+                <div class="form-group">
+                  <label>Paper Size</label>
+                  <select id="lay-paper-size">
+                    <option value="4x6">4x6 Inches (Standard souvenir)</option>
+                    <option value="2x6">2x6 Inches (Classic Photo Strip)</option>
+                    <option value="5x7">5x7 Inches</option>
+                    <option value="A4">A4 Sheet</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Orientation</label>
+                  <select id="lay-orientation">
+                    <option value="portrait">Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row-2col">
+                <div class="form-group">
+                  <label>Grid Rows</label>
+                  <input type="number" id="lay-rows" min="1" max="4" value="2">
+                </div>
+                <div class="form-group">
+                  <label>Grid Columns</label>
+                  <input type="number" id="lay-cols" min="1" max="4" value="2">
+                </div>
+              </div>
+
+              <div class="form-row-2col">
+                <div class="form-group">
+                  <label>Cell Spacing (px)</label>
+                  <input type="number" id="lay-spacing" min="0" max="40" value="16">
+                </div>
+                <div class="form-group">
+                  <label>Outer Margin (px)</label>
+                  <input type="number" id="lay-margin" min="0" max="60" value="20">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Text & Date Stamp Copy</label>
+                <input type="text" id="lay-text-stamp" value="Mia's 10th Birthday! • Aug 15, 2026">
+              </div>
+
+              <div class="form-group checkbox-group">
+                <label>
+                  <input type="checkbox" id="lay-show-qr" checked>
+                  Print QR Code in Footer of Physical Sheet
+                </label>
+              </div>
+
+              <button type="submit" class="btn-primary"><i data-lucide="check-square"></i> Save Print Template</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: PHOTO SESSION GALLERY -->
+      <section id="tab-gallery" class="tab-content">
+        <div class="tab-header">
+          <h2>Captured Photo Session Gallery</h2>
+          <p>Browse, audit, and download all photos taken during the event.</p>
+        </div>
+
+        <div class="gallery-filter-bar glass-panel">
+          <div class="filter-item">
+            <label>Filter by Mode</label>
+            <select id="filter-gallery-mode">
+              <option value="all">All Modes</option>
+              <option value="1-up">Single Shot</option>
+              <option value="3-up">3-Shot Strip</option>
+              <option value="4-up">4-Photo Grid</option>
+            </select>
+          </div>
+          <button id="btn-refresh-gallery" class="btn-secondary"><i data-lucide="rotate-cw"></i> Refresh Gallery</button>
+        </div>
+
+        <div id="gallery-cards-grid" class="gallery-cards-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB 5: CLOUD AUTO-UPLOAD -->
+      <section id="tab-cloud" class="tab-content">
+        <div class="tab-header">
+          <h2>Cloud Auto-Upload & Storage Queue</h2>
+          <p>Configure automatic cloud syncing to Google Drive, Dropbox, or S3 with offline queuing and retries.</p>
+        </div>
+
+        <div class="grid-2col">
+          <div class="card glass-panel">
+            <h3>Cloud Storage Provider Settings</h3>
+
+            <div id="gdrive-oauth-box" class="gdrive-oauth-box mb-16">
+              <div class="flex-between">
+                <div>
+                  <strong>Google Drive Connection Status</strong>
+                  <p class="text-muted small" id="gdrive-account-label">Not authorized with Google Drive yet</p>
+                </div>
+                <button id="btn-connect-gdrive" class="btn-primary btn-sm">
+                  <i data-lucide="key"></i> Connect Google Drive Account
+                </button>
+              </div>
+            </div>
+
+            <form id="form-cloud-config" class="admin-form">
+              <div class="form-group">
+                <label>Storage Provider</label>
+                <select id="cloud-provider">
+                  <option value="google_drive">Google Drive (OAuth 2.0 Integration)</option>
+                  <option value="dropbox">Dropbox API</option>
+                  <option value="s3">Amazon S3 Compatible Bucket</option>
+                  <option value="local_sim">Standalone / Local Cloud Simulator</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Connected Account Email</label>
+                <input type="email" id="cloud-account" value="mia.birthday.cloud@gmail.com">
+              </div>
+              <div class="form-group">
+                <label>Target Destination Folder Structure</label>
+                <input type="text" id="cloud-folder" value="/Photobooth/Mias10thBirthday/">
+              </div>
+              <div class="form-group">
+                <label>Share Permission Default</label>
+                <select id="cloud-sharing">
+                  <option value="anyone_with_link">Anyone with the link can view</option>
+                  <option value="private">Private (Restricted access)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn-primary"><i data-lucide="link-2"></i> Save Cloud Settings</button>
+            </form>
+          </div>
+
+          <div class="card glass-panel">
+            <h3>Upload Queue Status</h3>
+            <div class="cloud-metrics-grid">
+              <div class="metric-box">
+                <span class="metric-val" id="metric-cloud-pending">0</span>
+                <span class="metric-lbl">Pending</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-val text-success" id="metric-cloud-success">0</span>
+                <span class="metric-lbl">Uploaded</span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-val text-danger" id="metric-cloud-failed">0</span>
+                <span class="metric-lbl">Failed</span>
+              </div>
+            </div>
+
+            <div class="queue-actions">
+              <button id="btn-retry-failed-uploads" class="btn-secondary btn-danger-soft">
+                <i data-lucide="rotate-ccw"></i> Retry Failed Uploads
+              </button>
+            </div>
+
+            <h4 class="mt-20">Recent Queue Activity</h4>
+            <div id="cloud-queue-list" class="queue-activity-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: SETTINGS & ANALYTICS -->
+      <section id="tab-settings" class="tab-content">
+        <div class="tab-header">
+          <h2>Global Kiosk Settings & Event Analytics</h2>
+          <p>Real-time session metrics and operational kiosk hardware parameters.</p>
+        </div>
+
+        <div class="analytics-metrics-row">
+          <div class="metric-card glass-panel">
+            <div class="metric-icon"><i data-lucide="camera"></i></div>
+            <div>
+              <h3 id="stat-total-sessions">0</h3>
+              <p>Total Guest Sessions</p>
+            </div>
+          </div>
+
+          <div class="metric-card glass-panel">
+            <div class="metric-icon icon-rose"><i data-lucide="printer"></i></div>
+            <div>
+              <h3 id="stat-total-prints">0</h3>
+              <p>Physical Prints</p>
+            </div>
+          </div>
+
+          <div class="metric-card glass-panel">
+            <div class="metric-icon icon-emerald"><i data-lucide="cloud-check"></i></div>
+            <div>
+              <h3 id="stat-upload-rate">100%</h3>
+              <p>Cloud Upload Success</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass-panel mt-24">
+          <h3>Global Kiosk Hardware Settings</h3>
+          <form id="form-kiosk-settings" class="admin-form grid-2col">
+            <div class="form-group">
+              <label>Countdown Duration (Seconds): <strong id="lbl-countdown">3</strong>s</label>
+              <input type="range" id="set-countdown" min="1" max="10" value="3">
+            </div>
+
+            <div class="form-group">
+              <label>Guest Retake Limit: <strong id="lbl-retake">2</strong> retakes</label>
+              <input type="range" id="set-retake" min="0" max="5" value="2">
+            </div>
+
+            <div class="form-group">
+              <label>Session Idle Timeout: <strong id="lbl-timeout">35</strong>s</label>
+              <input type="range" id="set-timeout" min="15" max="120" value="35">
+            </div>
+
+            <div class="form-group">
+              <label>Printer Mode</label>
+              <select id="set-printer-mode">
+                <option value="prompt">Prompt Guest Selection</option>
+                <option value="auto">Auto-Print Every Session</option>
+                <option value="disabled">Disabled (Digital QR Only)</option>
+              </select>
+            </div>
+
+            <div class="form-group checkbox-group">
+              <label>
+                <input type="checkbox" id="set-audio" checked>
+                Enable Audio Sound Effects (Beeps & Shutter)
+              </label>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn-primary"><i data-lucide="save"></i> Save Hardware Settings</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/js/modal-system.js"></script>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>

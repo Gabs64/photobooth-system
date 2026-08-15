@@ -1,0 +1,153 @@
+/* Public Guest Download Portal - Liquid Glassmorphism CSS */
+
+.share-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 20px;
+  background: var(--color-bg-dark);
+  background-image: var(--color-bg-mesh);
+  background-attachment: fixed;
+}
+
+.share-header {
+  max-width: 720px;
+  width: 100%;
+  padding: 24px 32px;
+  margin-bottom: 28px;
+  border-radius: var(--border-radius-lg);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.header-brand h1 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #FFF;
+}
+
+.header-brand p {
+  color: var(--color-accent-gold);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.share-main {
+  max-width: 720px;
+  width: 100%;
+}
+
+.share-card {
+  padding: 40px 32px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  border-radius: var(--border-radius-xl);
+}
+
+.share-card-badge {
+  padding: 8px 20px;
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--color-accent-gold);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+  backdrop-filter: blur(10px);
+}
+
+.photo-preview-container {
+  width: 100%;
+  background: #000;
+  border-radius: var(--border-radius-lg);
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+}
+
+.photo-preview-container img {
+  max-width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  border-radius: var(--border-radius-sm);
+}
+
+.share-actions-group {
+  width: 100%;
+}
+
+.btn-large {
+  width: 100%;
+  padding: 22px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  text-decoration: none;
+  border-radius: 999px;
+}
+
+.social-share-section {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 28px;
+}
+
+.social-share-section h3 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.social-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-social {
+  flex: 1;
+  min-width: 140px;
+}
+
+.raw-shots-section {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 28px;
+}
+
+.raw-shots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.raw-shots-grid img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.25s ease;
+}
+
+.raw-shots-grid img:hover {
+  transform: scale(1.05);
+}
+
+.share-footer {
+  margin-top: 36px;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
