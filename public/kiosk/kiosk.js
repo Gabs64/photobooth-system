@@ -84,21 +84,28 @@ class PhotoboothKiosk {
   }
 
   // --- WEBCAM & SIMULATED CAMERA FALLBACK ---
-  async setupWebcam() {
+  async setupWebcam(selectedDeviceId = null) {
     const videoEl = document.getElementById('webcam-feed');
     const canvasEl = document.getElementById('simulated-feed-canvas');
 
+    if (this.mediaStream) {
+      this.mediaStream.getTracks().forEach(track => track.stop());
+    }
+
     try {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        this.mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: 'user' },
-          audio: false
-        });
+        const constraints = selectedDeviceId
+          ? { video: { deviceId: { exact: selectedDeviceId }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false }
+          : { video: { width: { ideal: 1920 }, height: { ideal: 1080 }, facingMode: 'user' }, audio: false };
+
+        this.mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
         videoEl.srcObject = this.mediaStream;
         videoEl.style.display = 'block';
         canvasEl.style.display = 'none';
         this.isSimulatedCamera = false;
         console.log('[Kiosk] Hardware camera stream connected.');
+
+        this.populateCameraDevices(selectedDeviceId);
       } else {
         throw new Error('getUserMedia not supported on browser');
       }
@@ -108,6 +115,34 @@ class PhotoboothKiosk {
       canvasEl.style.display = 'block';
       this.isSimulatedCamera = true;
       this.startSimulatedCameraFeed(canvasEl);
+    }
+  }
+
+  async populateCameraDevices(activeDeviceId = null) {
+    const selectEl = document.getElementById('camera-select-dropdown');
+    if (!selectEl) return;
+
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(d => d.kind === 'videoinput');
+
+      selectEl.innerHTML = '';
+      if (videoDevices.length === 0) {
+        selectEl.innerHTML = '<option value="">Default Camera</option>';
+        return;
+      }
+
+      videoDevices.forEach((device, index) => {
+        const option = document.createElement('option');
+        option.value = device.deviceId;
+        option.textContent = device.label || `Camera ${index + 1}`;
+        if (activeDeviceId && device.deviceId === activeDeviceId) {
+          option.selected = true;
+        }
+        selectEl.appendChild(option);
+      });
+    } catch (err) {
+      console.warn('[Kiosk] Error enumerating video devices:', err);
     }
   }
 
@@ -279,6 +314,18 @@ class PhotoboothKiosk {
         this.capturedSnapshots = [];
         this.currentShotIndex = 0;
         this.switchScreen('mode');
+      });
+    }
+
+    // Camera Selector Change Listener
+    const cameraSelect = document.getElementById('camera-select-dropdown');
+    if (cameraSelect) {
+      cameraSelect.addEventListener('change', (e) => {
+        const deviceId = e.target.value;
+        if (deviceId) {
+          this.playAudioBeep(750, 0.1);
+          this.setupWebcam(deviceId);
+        }
       });
     }
 

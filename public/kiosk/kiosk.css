@@ -432,52 +432,102 @@
 }
 
 .capture-sidebar {
-  padding: 28px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
+  gap: 16px;
   justify-content: space-between;
+  height: 100%;
+  border-radius: var(--border-radius-lg);
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
 
 .btn-capture-back {
   width: 100%;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 12px;
-  padding: 14px 20px;
-  font-size: 1rem;
+  padding: 12px 18px;
+  font-size: 0.95rem;
   font-weight: 700;
+  border-radius: 14px;
+}
+
+.camera-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.camera-select-group label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--color-accent-gold);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.camera-select-dropdown {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.camera-select-dropdown:focus {
+  border-color: #8B5CF6;
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.4);
+}
+
+.tips-container h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #FFFFFF;
 }
 
 .pose-tips {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 10px;
 }
 
 .pose-tips li {
   display: flex;
   align-items: center;
-  gap: 14px;
-  font-size: 1.1rem;
+  gap: 10px;
+  font-size: 0.92rem;
   color: var(--color-text-muted);
   font-weight: 600;
 }
 
 .retake-info-badge {
   background: rgba(255, 255, 255, 0.06);
-  padding: 14px;
-  border-radius: 16px;
+  padding: 12px 16px;
+  border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   text-align: center;
   color: var(--color-text-muted);
 }
 
 .btn-pulse-capture {
-  padding: 22px;
-  font-size: 1.25rem;
+  padding: 18px;
+  font-size: 1.15rem;
   width: 100%;
+  border-radius: 16px;
 }
 
 /* Screen 5: Preview Screen (Compact & Balanced Layout) */

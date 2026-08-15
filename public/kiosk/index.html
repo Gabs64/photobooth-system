@@ -137,12 +137,21 @@
             <i data-lucide="arrow-left"></i> Back to Layouts
           </button>
 
-          <h3>Posing Tips</h3>
-          <ul class="pose-tips">
-            <li><i data-lucide="smile"></i> Smile big for the camera!</li>
-            <li><i data-lucide="zap"></i> Try fun birthday poses!</li>
-            <li><i data-lucide="sparkles"></i> Check countdown indicator</li>
-          </ul>
+          <div class="camera-select-group">
+            <label for="camera-select-dropdown"><i data-lucide="video"></i> Select Camera</label>
+            <select id="camera-select-dropdown" class="camera-select-dropdown">
+              <option value="">Default Camera</option>
+            </select>
+          </div>
+
+          <div class="tips-container">
+            <h3>Posing Tips</h3>
+            <ul class="pose-tips">
+              <li><i data-lucide="smile"></i> Smile big for the camera!</li>
+              <li><i data-lucide="zap"></i> Try fun birthday poses!</li>
+              <li><i data-lucide="sparkles"></i> Check countdown indicator</li>
+            </ul>
+          </div>
 
           <div class="retake-info-badge">
             <i data-lucide="rotate-ccw"></i> Retakes Remaining: <strong id="retake-count-text">2</strong>
