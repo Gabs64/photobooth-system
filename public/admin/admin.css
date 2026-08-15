@@ -397,9 +397,11 @@
 .admin-login-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(9, 13, 22, 0.92);
-  backdrop-filter: blur(28px) saturate(200%);
-  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  background: radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.2), transparent 50%),
+              radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.15), transparent 50%),
+              rgba(9, 13, 22, 0.94);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
   z-index: 10000;
   display: flex;
   align-items: center;
@@ -408,6 +410,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.35s ease;
+  overflow: hidden;
 }
 
 .admin-login-overlay.active {
@@ -415,15 +418,43 @@
   pointer-events: auto;
 }
 
+.login-bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.login-bg-blob.blob-1 {
+  width: 450px;
+  height: 450px;
+  background: var(--color-primary);
+  top: -100px;
+  left: -100px;
+  animation: liquidFloat 8s ease-in-out infinite alternate;
+}
+
+.login-bg-blob.blob-2 {
+  width: 400px;
+  height: 400px;
+  background: var(--color-secondary);
+  bottom: -100px;
+  right: -100px;
+  animation: liquidFloat 10s ease-in-out infinite alternate-reverse;
+}
+
 .admin-login-card {
+  position: relative;
+  z-index: 10;
   max-width: 440px;
   width: 100%;
   padding: 44px 36px;
   border-radius: 36px;
-  background: rgba(15, 23, 42, 0.94);
+  background: rgba(15, 23, 42, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.8), 0 0 50px rgba(139, 92, 246, 0.35);
-  transform: scale(0.9) translateY(20px);
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.85), 0 0 60px rgba(139, 92, 246, 0.3);
+  transform: scale(0.88) translateY(20px);
   transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -437,36 +468,82 @@
 }
 
 .login-icon {
-  width: 68px;
-  height: 68px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
   color: #FFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 16px;
-  font-size: 2.2rem;
+  margin: 0 auto 18px;
+  font-size: 2.3rem;
   box-shadow: 0 0 35px var(--color-primary-glow);
+  animation: pulseGlow 2.5s infinite ease-in-out;
 }
 
 .login-header h2 {
-  font-size: 1.8rem;
+  font-size: 1.85rem;
   font-weight: 900;
   color: #FFFFFF;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
 .login-header p {
   font-size: 0.95rem;
   color: var(--color-text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .admin-login-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-field-icon {
+  position: absolute;
+  left: 18px;
+  color: var(--color-primary);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 5;
+  transition: color 0.25s ease;
+}
+
+.login-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 18px 0 50px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.login-input:focus {
+  border-color: #8B5CF6;
+  background: rgba(15, 23, 42, 0.85);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+.login-input:focus + .input-field-icon,
+.input-icon-wrapper:focus-within .input-field-icon {
+  color: var(--color-secondary);
 }
 
 .btn-login-submit {
@@ -474,5 +551,26 @@
   justify-content: center;
   padding: 18px;
   font-size: 1.1rem;
-  margin-top: 8px;
+  font-weight: 800;
+  margin-top: 6px;
+  border-radius: 18px;
+}
+
+.login-credentials-hint {
+  background: rgba(139, 92, 246, 0.12);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.login-credentials-hint span {
+  color: var(--color-accent-gold);
+  font-weight: 800;
 }
