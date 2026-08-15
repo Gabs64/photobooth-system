@@ -4,8 +4,10 @@ const { google } = require('googleapis');
 const db = require('../../db/database');
 
 function getOAuth2Client(req) {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const rawClientId = process.env.GOOGLE_CLIENT_ID || '';
+  const rawClientSecret = process.env.GOOGLE_CLIENT_SECRET || '';
+  const clientId = rawClientId.replace(/^["']|["']$/g, '').trim();
+  const clientSecret = rawClientSecret.replace(/^["']|["']$/g, '').trim();
   
   let redirectUri = process.env.GOOGLE_REDIRECT_URI;
   if (!redirectUri && req) {

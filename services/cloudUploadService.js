@@ -226,10 +226,14 @@ class CloudUploadService {
   }
 
   async uploadToRealGoogleDrive(photo, cloudConfig) {
+    const clientId = (process.env.GOOGLE_CLIENT_ID || '').replace(/^["']|["']$/g, '').trim();
+    const clientSecret = (process.env.GOOGLE_CLIENT_SECRET || '').replace(/^["']|["']$/g, '').trim();
+    const redirectUri = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/cloud/gdrive/callback';
+
     const oauth2Client = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/cloud/gdrive/callback'
+      clientId,
+      clientSecret,
+      redirectUri
     );
 
     oauth2Client.setCredentials({
