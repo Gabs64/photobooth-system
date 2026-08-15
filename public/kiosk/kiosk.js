@@ -388,7 +388,7 @@ class PhotoboothKiosk {
   startCountdownCaptureSequence() {
     const countdownOverlay = document.getElementById('countdown-overlay');
     const countdownNum = document.getElementById('countdown-number');
-    let count = (this.settings && this.settings.countdown_duration) || 3;
+    let count = (this.settings && this.settings.countdown_duration) || 5;
 
     countdownOverlay.classList.add('active');
     countdownNum.textContent = count;

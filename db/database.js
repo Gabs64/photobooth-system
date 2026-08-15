@@ -259,8 +259,9 @@ function seedInitialData() {
     // Insert System Settings
     db.prepare(`
       INSERT OR REPLACE INTO settings (id, countdown_duration, retake_limit, idle_timeout_sec, printer_mode, allow_guest_overlay_select, audio_effects_enabled, qr_placement)
-      VALUES (1, 3, 2, 35, 'prompt', 1, 1, 'both')
+      VALUES (1, 5, 2, 35, 'prompt', 1, 1, 'both')
     `).run();
+    db.prepare(`UPDATE settings SET countdown_duration = 5 WHERE id = 1`).run();
   }
 }
 
