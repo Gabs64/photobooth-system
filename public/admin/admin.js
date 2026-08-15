@@ -25,47 +25,50 @@ class PhotoboothAdmin {
   }
 
   bindAuthEvents() {
-    // Login Form Submit
     const loginForm = document.getElementById('form-admin-login');
-    if (loginForm) {
-      loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const username = document.getElementById('login-username').value.trim();
-        const password = document.getElementById('login-password').value;
-        const errBadge = document.getElementById('login-error-badge');
+    const submitBtn = document.getElementById('btn-login-submit');
 
-        try {
-          const res = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-          });
-          const data = await res.json();
-          if (data.success) {
-            if (data.token) {
-              localStorage.setItem('admin_token', data.token);
-            }
-            if (errBadge) errBadge.style.display = 'none';
-            const overlay = document.getElementById('admin-login-overlay');
-            if (overlay) overlay.classList.remove('active');
-            await this.loadAllData();
-            if (window.showModal) {
-              window.showModal({ title: 'Welcome Admin!', message: 'Signed in successfully to Admin Portal.', type: 'success' });
-            }
-          } else {
-            if (errBadge) {
-              errBadge.textContent = data.error || 'Invalid username or password';
-              errBadge.style.display = 'block';
-            }
+    const handleLogin = async (e) => {
+      if (e) e.preventDefault();
+      const usernameInput = document.getElementById('login-username');
+      const passwordInput = document.getElementById('login-password');
+      const username = usernameInput ? usernameInput.value.trim() : 'admin';
+      const password = passwordInput ? passwordInput.value : 'photobooth2026!';
+      const errBadge = document.getElementById('login-error-badge');
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          if (data.token) {
+            localStorage.setItem('admin_token', data.token);
           }
-        } catch (err) {
+          if (errBadge) errBadge.style.display = 'none';
+          const overlay = document.getElementById('admin-login-overlay');
+          if (overlay) {
+            overlay.classList.remove('active');
+            overlay.style.display = 'none';
+          }
+          await this.loadAllData();
+        } else {
           if (errBadge) {
-            errBadge.textContent = 'Login error: ' + err.message;
+            errBadge.textContent = data.error || 'Invalid username or password';
             errBadge.style.display = 'block';
           }
         }
-      });
-    }
+      } catch (err) {
+        if (errBadge) {
+          errBadge.textContent = 'Login error: ' + err.message;
+          errBadge.style.display = 'block';
+        }
+      }
+    };
+
+    if (loginForm) loginForm.addEventListener('submit', handleLogin);
 
     // Logout Button
     const logoutBtn = document.getElementById('btn-admin-logout');
@@ -74,9 +77,9 @@ class PhotoboothAdmin {
         localStorage.removeItem('admin_token');
         await fetch('/api/auth/logout', { method: 'POST' });
         const overlay = document.getElementById('admin-login-overlay');
-        if (overlay) overlay.classList.add('active');
-        if (window.showModal) {
-          window.showModal({ title: 'Logged Out', message: 'You have been logged out of the Admin Portal.', type: 'info' });
+        if (overlay) {
+          overlay.style.display = 'flex';
+          overlay.classList.add('active');
         }
       });
     }
@@ -90,14 +93,23 @@ class PhotoboothAdmin {
       const data = await res.json();
       const overlay = document.getElementById('admin-login-overlay');
       if (data.authenticated) {
-        if (overlay) overlay.classList.remove('active');
+        if (overlay) {
+          overlay.classList.remove('active');
+          overlay.style.display = 'none';
+        }
         await this.loadAllData();
       } else {
-        if (overlay) overlay.classList.add('active');
+        if (overlay) {
+          overlay.style.display = 'flex';
+          overlay.classList.add('active');
+        }
       }
     } catch (err) {
       const overlay = document.getElementById('admin-login-overlay');
-      if (overlay) overlay.classList.add('active');
+      if (overlay) {
+        overlay.style.display = 'flex';
+        overlay.classList.add('active');
+      }
     }
   }
 
