@@ -56,7 +56,6 @@ class PhotoboothAdmin {
           const overlay = document.getElementById('admin-login-overlay');
           if (overlay) {
             overlay.classList.remove('active');
-            overlay.style.display = 'none';
           }
           await this.loadAllData();
         } else {
@@ -90,7 +89,6 @@ class PhotoboothAdmin {
         await fetch('/api/auth/logout', { method: 'POST' });
         const overlay = document.getElementById('admin-login-overlay');
         if (overlay) {
-          overlay.style.display = 'flex';
           overlay.classList.add('active');
         }
       });
@@ -105,23 +103,14 @@ class PhotoboothAdmin {
       const data = await res.json();
       const overlay = document.getElementById('admin-login-overlay');
       if (data.authenticated) {
-        if (overlay) {
-          overlay.classList.remove('active');
-          overlay.style.display = 'none';
-        }
+        if (overlay) overlay.classList.remove('active');
         await this.loadAllData();
       } else {
-        if (overlay) {
-          overlay.style.display = 'flex';
-          overlay.classList.add('active');
-        }
+        if (overlay) overlay.classList.add('active');
       }
     } catch (err) {
       const overlay = document.getElementById('admin-login-overlay');
-      if (overlay) {
-        overlay.style.display = 'flex';
-        overlay.classList.add('active');
-      }
+      if (overlay) overlay.classList.add('active');
     }
   }
 

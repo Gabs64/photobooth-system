@@ -403,7 +403,7 @@
   backdrop-filter: blur(32px) saturate(200%);
   -webkit-backdrop-filter: blur(32px) saturate(200%);
   z-index: 10000;
-  display: flex;
+  display: none !important;
   align-items: center;
   justify-content: center;
   padding: 24px;
@@ -414,6 +414,7 @@
 }
 
 .admin-login-overlay.active {
+  display: flex !important;
   opacity: 1;
   pointer-events: auto;
 }
