@@ -399,9 +399,9 @@ class PhotoboothKiosk {
     }
   }
 
-  // --- CLIENT-SIDE CANVAS PRINT SHEET COMPOSITOR ---
+  // --- CLIENT-SIDE CANVAS PRINT SHEET COMPOSITOR (LANDSCAPE ORIENTATION) ---
   renderCompositedPrintSheet() {
-    // Dynamically match layout grid to selected mode / shot count
+    // Dynamically match layout grid to selected mode (Landscape orientation)
     let rows = 2;
     let cols = 2;
     let paperSize = '4x6';
@@ -411,24 +411,25 @@ class PhotoboothKiosk {
       cols = 1;
       paperSize = '4x6';
     } else if (this.selectedMode === '3-up' || this.capturedSnapshots.length === 3) {
-      rows = 3;
-      cols = 1;
+      rows = 1;
+      cols = 3;
       paperSize = '2x6';
     } else if (this.selectedMode === '4-up' || this.capturedSnapshots.length === 4) {
       rows = 2;
       cols = 2;
       paperSize = '4x6';
     } else {
-      rows = Math.ceil(Math.sqrt(this.capturedSnapshots.length));
-      cols = Math.ceil(this.capturedSnapshots.length / rows);
+      cols = Math.ceil(Math.sqrt(this.capturedSnapshots.length));
+      rows = Math.ceil(this.capturedSnapshots.length / cols);
     }
 
     const layout = {
       paper_size: paperSize,
+      orientation: 'landscape',
       rows: rows,
       cols: cols,
-      spacing_px: paperSize === '2x6' ? 12 : 16,
-      margin_px: paperSize === '2x6' ? 16 : 24,
+      spacing_px: paperSize === '2x6' ? 14 : 18,
+      margin_px: paperSize === '2x6' ? 18 : 26,
       border_color: '#FFFFFF',
       border_width_px: 6,
       text_stamp: (this.eventData ? this.eventData.name : "Mia's 10th Birthday!") + " • " + (this.eventData ? this.eventData.event_date : "Aug 15, 2026")
@@ -437,13 +438,13 @@ class PhotoboothKiosk {
     const canvas = document.getElementById('final-composite-canvas');
     const ctx = canvas.getContext('2d');
 
-    // Resolution: High-DPI 4x6" print quality (1200 x 1800 px) or 2x6" strip (600 x 1800 px)
+    // Resolution: High-DPI 6x4" Landscape print quality (1800 x 1200 px) or 6x2" horizontal strip (1800 x 600 px)
     if (layout.paper_size === '2x6') {
-      canvas.width = 600;
-      canvas.height = 1800;
+      canvas.width = 1800;
+      canvas.height = 600;
     } else {
-      canvas.width = 1200;
-      canvas.height = 1800;
+      canvas.width = 1800;
+      canvas.height = 1200;
     }
 
     // 1. Draw Paper Background

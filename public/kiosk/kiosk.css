@@ -304,32 +304,42 @@
   padding-top: 20px;
 }
 
-/* Screen 4: Live Camera Capture */
+#screen-capture {
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
 .capture-workspace {
   display: grid;
   grid-template-columns: 1fr 360px;
   gap: 28px;
-  height: 100%;
-  max-width: 1320px;
+  max-width: 1240px;
   margin: 0 auto;
   width: 100%;
+  align-items: center;
 }
 
 .video-viewfinder-container {
   position: relative;
   overflow: hidden;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  max-height: 68vh;
+  margin: 0 auto;
   border-radius: var(--border-radius-lg);
   background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(139, 92, 246, 0.2);
 }
 
 #webcam-feed, #simulated-feed-canvas {
   width: 100%;
   height: 100%;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
   transform: scaleX(-1);
 }

@@ -231,16 +231,16 @@ function seedInitialData() {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `).run(overlay2Id, eventId, 'Retro Neon Glow', '/uploads/overlays/overlay_neon.png', 0, 0, 1.0, 0);
 
-    // Insert Default Print Layouts
+    // Insert Default Print Layouts (Landscape Orientation)
     db.prepare(`
       INSERT INTO print_layouts (id, event_id, name, paper_size, orientation, rows, cols, cell_count, spacing_px, margin_px, text_stamp, show_qr_on_print, is_active)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(layout1Id, eventId, '4-Photo Classic Grid (4x6")', '4x6', 'portrait', 2, 2, 4, 16, 20, "Mia's 10th Birthday! • Aug 15, 2026", 1, 1);
+    `).run(layout1Id, eventId, '4-Photo Classic Grid (6x4" Landscape)', '4x6', 'landscape', 2, 2, 4, 16, 20, "Mia's 10th Birthday! • Aug 15, 2026", 1, 1);
 
     db.prepare(`
       INSERT INTO print_layouts (id, event_id, name, paper_size, orientation, rows, cols, cell_count, spacing_px, margin_px, text_stamp, show_qr_on_print, is_active)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(layout2Id, eventId, '3-Photo Strip (2x6")', '2x6', 'portrait', 3, 1, 3, 12, 16, "Mia's Birthday • 08.15.2026", 1, 0);
+    `).run(layout2Id, eventId, '3-Photo Strip (6x2" Landscape)', '2x6', 'landscape', 1, 3, 3, 14, 18, "Mia's Birthday • 08.15.2026", 1, 0);
 
     // Insert Cloud Config
     db.prepare(`
