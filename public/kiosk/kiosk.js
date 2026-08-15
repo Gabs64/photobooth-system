@@ -252,14 +252,7 @@ class PhotoboothKiosk {
 
   resetIdleTimer() {
     if (this.idleTimer) clearTimeout(this.idleTimer);
-    if (this.currentScreen !== 'welcome') {
-      const timeoutSec = (this.settings && this.settings.idle_timeout_sec) || 35;
-      this.idleTimer = setTimeout(() => {
-        console.log('[Kiosk] Session idle timeout reached. Returning to Welcome screen.');
-        this.resetSessionState();
-        this.switchScreen('welcome');
-      }, timeoutSec * 1000);
-    }
+    // Auto-timeout disabled: User stays on current screen without idle redirects
   }
 
   resetSessionState() {
