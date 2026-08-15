@@ -387,8 +387,9 @@ class PhotoboothAdmin {
           label.innerHTML = `<span class="badge badge-warning">READY TO CONNECT</span> API Credentials saved. Click button to authorize.`;
         } else {
           label.innerHTML = `<span class="badge badge-danger">NOT CONNECTED</span> Enter your Google OAuth Client ID & Secret below.`;
+        if (data.redirectUri && document.getElementById('display-redirect-uri')) {
+          document.getElementById('display-redirect-uri').textContent = data.redirectUri;
         }
-      }
 
       document.getElementById('metric-cloud-pending').textContent = data.stats.pending;
       document.getElementById('metric-cloud-success').textContent = data.stats.success;

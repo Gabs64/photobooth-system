@@ -3,6 +3,21 @@ const router = express.Router();
 const { google } = require('googleapis');
 const db = require('../../db/database');
 
+function getRedirectUri(req) {
+  let redirectUri = process.env.GOOGLE_REDIRECT_URI;
+  if (!redirectUri && req) {
+    const host = req.headers['x-forwarded-host'] || req.headers.host;
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    if (host) {
+      redirectUri = `${protocol}://${host}/api/cloud/gdrive/callback`;
+    }
+  }
+  if (!redirectUri) {
+    redirectUri = 'http://localhost:3000/api/cloud/gdrive/callback';
+  }
+  return redirectUri;
+}
+
 function getOAuth2Client(req) {
   let clientId = '';
   let clientSecret = '';
@@ -20,17 +35,7 @@ function getOAuth2Client(req) {
   clientId = clientId.replace(/^["']|["']$/g, '').trim();
   clientSecret = clientSecret.replace(/^["']|["']$/g, '').trim();
   
-  let redirectUri = process.env.GOOGLE_REDIRECT_URI;
-  if (!redirectUri && req) {
-    const host = req.headers.host;
-    const protocol = req.headers['x-forwarded-proto'] || 'https';
-    if (host) {
-      redirectUri = `${protocol}://${host}/api/cloud/gdrive/callback`;
-    }
-  }
-  if (!redirectUri) {
-    redirectUri = 'http://localhost:3000/api/cloud/gdrive/callback';
-  }
+  const redirectUri = getRedirectUri(req);
 
   if (!clientId || !clientSecret) {
     return null;
@@ -54,10 +59,12 @@ router.get('/status', (req, res) => {
     `).all();
 
     const hasClientCredentials = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+    const redirectUri = getRedirectUri(req);
 
     res.json({
       config,
       hasClientCredentials,
+      redirectUri,
       stats: {
         pending: pendingCount,
         uploading: uploadingCount,
@@ -75,9 +82,11 @@ router.get('/status', (req, res) => {
 // GET Google Drive OAuth Authorization URL
 router.get('/gdrive/auth-url', (req, res) => {
   const oauth2Client = getOAuth2Client(req);
+  const redirectUri = getRedirectUri(req);
   if (!oauth2Client) {
     return res.status(400).json({ 
-      error: 'Google Drive credentials missing on Vercel. Please add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in Vercel Settings -> Environment Variables.' 
+      error: 'Google Drive credentials missing. Please enter your Google OAuth Client ID and Secret below in Cloud Storage Settings.',
+      redirectUri
     });
   }
 
@@ -92,7 +101,7 @@ router.get('/gdrive/auth-url', (req, res) => {
     prompt: 'consent'
   });
 
-  res.json({ authUrl });
+  res.json({ authUrl, redirectUri });
 });
 
 // GET Google Drive OAuth Callback Handler

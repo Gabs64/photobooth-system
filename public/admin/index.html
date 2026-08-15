@@ -364,6 +364,15 @@
                   <i data-lucide="key"></i> Connect Google Drive Account
                 </button>
               </div>
+
+              <div id="redirect-uri-notice" class="mt-12 p-12 glass-panel" style="background: rgba(139, 92, 246, 0.12); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; font-size: 0.85rem;">
+                <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                  <i data-lucide="info" style="width: 16px; height: 16px; color: var(--color-accent-gold);"></i>
+                  <strong>Google Cloud Authorized Redirect URI:</strong>
+                </div>
+                <code id="display-redirect-uri" style="color: var(--color-accent-gold); font-weight: bold; word-break: break-all; display: block; padding: 4px 8px; background: rgba(0,0,0,0.3); border-radius: 6px; margin: 4px 0;">Loading URI...</code>
+                <p class="text-muted small" style="margin: 0;">Copy and paste this exact URL into <strong>Authorized redirect URIs</strong> in your Google Cloud Console OAuth Client Credentials settings.</p>
+              </div>
             </div>
 
             <form id="form-cloud-config" class="admin-form">
