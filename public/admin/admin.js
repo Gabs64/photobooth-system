@@ -32,9 +32,14 @@ class PhotoboothAdmin {
       if (e) e.preventDefault();
       const usernameInput = document.getElementById('login-username');
       const passwordInput = document.getElementById('login-password');
-      const username = usernameInput ? usernameInput.value.trim() : 'admin';
-      const password = passwordInput ? passwordInput.value : 'photobooth2026!';
+      const username = (usernameInput && usernameInput.value) ? usernameInput.value.trim() : 'admin';
+      const password = (passwordInput && passwordInput.value) ? passwordInput.value : 'photobooth2026!';
       const errBadge = document.getElementById('login-error-badge');
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'VERIFYING CREDENTIALS...';
+      }
 
       try {
         const res = await fetch('/api/auth/login', {
@@ -65,10 +70,17 @@ class PhotoboothAdmin {
           errBadge.textContent = 'Login error: ' + err.message;
           errBadge.style.display = 'block';
         }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'SIGN IN TO ADMIN PORTAL <i data-lucide="arrow-right"></i>';
+          lucide.createIcons();
+        }
       }
     };
 
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
+    if (submitBtn) submitBtn.addEventListener('click', handleLogin);
 
     // Logout Button
     const logoutBtn = document.getElementById('btn-admin-logout');
