@@ -490,24 +490,55 @@ class PhotoboothAdmin {
       });
     });
 
-    // Set Active Overlay Button
-    document.getElementById('btn-set-active-overlay').addEventListener('click', async () => {
-      if (!this.selectedOverlay) return alert('Select an overlay first');
-      try {
-        const res = await fetch(`/api/overlays/${this.selectedOverlay.id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ is_active: 1 })
-        });
-        const data = await res.json();
-        if (data.success) {
-          alert('Selected overlay set as Active Kiosk Frame!');
-          this.loadAllData();
+    // Save Overlay Meta / Position & Scale Button
+    const saveOvlBtn = document.getElementById('btn-save-overlay-meta');
+    if (saveOvlBtn) {
+      saveOvlBtn.addEventListener('click', async () => {
+        if (!this.selectedOverlay) return alert('Select an overlay first');
+        try {
+          const payload = {
+            position_x: parseFloat(document.getElementById('slider-pos-x').value || 0),
+            position_y: parseFloat(document.getElementById('slider-pos-y').value || 0),
+            scale: parseFloat(document.getElementById('slider-scale').value || 1.0),
+            schedule_time: document.getElementById('input-overlay-schedule').value || null
+          };
+          const res = await fetch(`/api/overlays/${this.selectedOverlay.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert('Overlay position and scale saved successfully!');
+            this.loadAllData();
+          }
+        } catch (err) {
+          alert('Error saving overlay layout: ' + err.message);
         }
-      } catch (err) {
-        alert('Error setting active overlay: ' + err.message);
-      }
-    });
+      });
+    }
+
+    // Set Active Overlay Button
+    const setActiveOvlBtn = document.getElementById('btn-set-active-overlay');
+    if (setActiveOvlBtn) {
+      setActiveOvlBtn.addEventListener('click', async () => {
+        if (!this.selectedOverlay) return alert('Select an overlay first');
+        try {
+          const res = await fetch(`/api/overlays/${this.selectedOverlay.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ is_active: 1 })
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert('Selected overlay set as Active Kiosk Frame!');
+            this.loadAllData();
+          }
+        } catch (err) {
+          alert('Error setting active overlay: ' + err.message);
+        }
+      });
+    }
 
     // Upload New Overlay Form Submit
     document.getElementById('form-upload-overlay').addEventListener('submit', async (e) => {
