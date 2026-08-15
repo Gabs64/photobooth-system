@@ -55,7 +55,10 @@ class PhotoboothKiosk {
       this.eventData = data.event;
       this.activeOverlay = data.activeOverlay;
       this.activeLayout = data.activeLayout;
-      this.settings = data.settings || { countdown_duration: 3, retake_limit: 2, idle_timeout_sec: 35 };
+      this.settings = data.settings || { countdown_duration: 5, retake_limit: 2, idle_timeout_sec: 35 };
+      if (!this.settings.countdown_duration || this.settings.countdown_duration === 3) {
+        this.settings.countdown_duration = 5;
+      }
       this.retakesRemaining = this.settings.retake_limit;
 
       this.applyEventBranding();

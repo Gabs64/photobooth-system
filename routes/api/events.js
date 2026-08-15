@@ -18,7 +18,8 @@ router.get('/active', (req, res) => {
 
     const allOverlays = db.prepare('SELECT * FROM overlays WHERE event_id = ? ORDER BY created_at DESC').all(event.id);
     const allLayouts = db.prepare('SELECT * FROM print_layouts WHERE event_id = ? ORDER BY created_at DESC').all(event.id);
-    const settings = db.prepare('SELECT * FROM settings WHERE id = 1').get();
+    let settings = db.prepare('SELECT * FROM settings WHERE id = 1').get() || {};
+    settings.countdown_duration = 5;
 
     res.json({
       event,
