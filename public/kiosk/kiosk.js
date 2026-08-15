@@ -522,48 +522,123 @@ class PhotoboothKiosk {
     let imagesProcessed = 0;
 
     const drawGridAndOverlay = () => {
-      for (let r = 0; r < layout.rows; r++) {
-        for (let c = 0; c < layout.cols; c++) {
-          if (shotIdx >= loadedImages.length) break;
+      if (this.selectedMode === '3-up' || (layout.rows === 2 && layout.cols === 2 && loadedImages.length === 3)) {
+        // 2x2 Grid with Top-Left Reserved for Debutant Photo / Branding Card
+        const gridCells = [
+          { r: 0, c: 0, isDebutanteCard: true },
+          { r: 0, c: 1, imgIdx: 0 },
+          { r: 1, c: 0, imgIdx: 1 },
+          { r: 1, c: 1, imgIdx: 2 }
+        ];
 
-          const x = margin + c * (cellWidth + spacing);
-          const y = margin + 110 + r * (cellHeight + spacing);
+        gridCells.forEach(cell => {
+          const x = margin + cell.c * (cellWidth + spacing);
+          const y = margin + 110 + cell.r * (cellHeight + spacing);
 
-          // Draw Photo Frame Drop Shadow
+          // Draw Frame Drop Shadow
           ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
           ctx.shadowBlur = 12;
           ctx.fillStyle = '#F8FAFC';
           ctx.fillRect(x, y, cellWidth, cellHeight);
           ctx.shadowBlur = 0;
 
-          // Draw Image with Object-Fit Cover Cropping
-          const img = loadedImages[shotIdx];
-          if (img) {
-            const imgAspect = img.width / img.height;
-            const cellAspect = cellWidth / cellHeight;
-            let sx, sy, sw, sh;
+          if (cell.isDebutanteCard) {
+            // Reserved Space for Debutant Photo / Special Graphic
+            const grad = ctx.createLinearGradient(x, y, x + cellWidth, y + cellHeight);
+            const pColor = this.eventData ? this.eventData.theme_primary : '#8B5CF6';
+            const sColor = this.eventData ? this.eventData.theme_secondary : '#EC4899';
+            grad.addColorStop(0, pColor);
+            grad.addColorStop(1, sColor);
 
-            if (imgAspect > cellAspect) {
-              sh = img.height;
-              sw = img.height * cellAspect;
-              sx = (img.width - sw) / 2;
-              sy = 0;
-            } else {
-              sw = img.width;
-              sh = img.width / cellAspect;
-              sx = 0;
-              sy = (img.height - sh) / 2;
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, cellWidth, cellHeight);
+
+            // Inner Card Frame Line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(x + 12, y + 12, cellWidth - 24, cellHeight - 24);
+
+            // Debutant Label & Event Name
+            ctx.fillStyle = '#FFFFFF';
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 8;
+            ctx.font = 'bold 36px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('👑 DEBUTANTE', x + cellWidth / 2, y + cellHeight / 2 - 18);
+
+            ctx.font = '600 24px Plus Jakarta Sans, sans-serif';
+            ctx.fillText(this.eventData ? this.eventData.name : 'Special Celebration', x + cellWidth / 2, y + cellHeight / 2 + 25);
+            ctx.shadowBlur = 0;
+          } else {
+            const img = loadedImages[cell.imgIdx];
+            if (img) {
+              const imgAspect = img.width / img.height;
+              const cellAspect = cellWidth / cellHeight;
+              let sx, sy, sw, sh;
+
+              if (imgAspect > cellAspect) {
+                sh = img.height;
+                sw = img.height * cellAspect;
+                sx = (img.width - sw) / 2;
+                sy = 0;
+              } else {
+                sw = img.width;
+                sh = img.width / cellAspect;
+                sx = 0;
+                sy = (img.height - sh) / 2;
+              }
+
+              ctx.drawImage(img, sx, sy, sw, sh, x, y, cellWidth, cellHeight);
             }
-
-            ctx.drawImage(img, sx, sy, sw, sh, x, y, cellWidth, cellHeight);
           }
 
           // Cell Inner Border
           ctx.strokeStyle = layout.border_color || '#FFFFFF';
           ctx.lineWidth = layout.border_width_px || 6;
           ctx.strokeRect(x, y, cellWidth, cellHeight);
+        });
+      } else {
+        // Standard Grid for 1-up, 4-up, etc.
+        for (let r = 0; r < layout.rows; r++) {
+          for (let c = 0; c < layout.cols; c++) {
+            if (shotIdx >= loadedImages.length) break;
 
-          shotIdx++;
+            const x = margin + c * (cellWidth + spacing);
+            const y = margin + 110 + r * (cellHeight + spacing);
+
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+            ctx.shadowBlur = 12;
+            ctx.fillStyle = '#F8FAFC';
+            ctx.fillRect(x, y, cellWidth, cellHeight);
+            ctx.shadowBlur = 0;
+
+            const img = loadedImages[shotIdx];
+            if (img) {
+              const imgAspect = img.width / img.height;
+              const cellAspect = cellWidth / cellHeight;
+              let sx, sy, sw, sh;
+
+              if (imgAspect > cellAspect) {
+                sh = img.height;
+                sw = img.height * cellAspect;
+                sx = (img.width - sw) / 2;
+                sy = 0;
+              } else {
+                sw = img.width;
+                sh = img.width / cellAspect;
+                sx = 0;
+                sy = (img.height - sh) / 2;
+              }
+
+              ctx.drawImage(img, sx, sy, sw, sh, x, y, cellWidth, cellHeight);
+            }
+
+            ctx.strokeStyle = layout.border_color || '#FFFFFF';
+            ctx.lineWidth = layout.border_width_px || 6;
+            ctx.strokeRect(x, y, cellWidth, cellHeight);
+
+            shotIdx++;
+          }
         }
       }
 
